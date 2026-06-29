@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cv-demo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cv-demo-app
+  template:
+    metadata:
+      labels:
+        app: cv-demo-app
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/actuator/prometheus"
+    spec:
+      containers:
+        - name: cv-demo-app
+          image: {{.Values.image}}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
